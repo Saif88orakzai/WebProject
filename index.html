@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <title>Frontend Mentor | Job Listings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <img id="header-image" src="images/bg-header-desktop.svg" alt="img">
+    </header>
+    <div id="bar-below-header" class="container">
+        <div class="filter-button" data-filter="role" data-value="Frontend">Frontend</div>
+        <div class="filter-button" data-filter="role" data-value="Backend">Backend</div>
+        <div class="filter-button" data-filter="role" data-value="Fullstack">Fullstack</div>
+        <button class="filter-button" id="add-job-button">+</button>
+    </div>
+    <div id="add-job-popup" class="popup">
+        <h2 id="add-new-job">Add a New Job</h2>
+        <br><br>
+        <form id="job-form">
+            <label for="position">Position:</label>
+            <input type="text" id="position" name="position" required>
+            <br><br>
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company" required>
+            <br><br>
+            <label for="new">New Job:</label>
+            <input type="checkbox" id="new" name="new">
+            <label for="featured">Featured Job:</label>
+            <input type="checkbox" id="featured" name="featured">
+            <br><br>
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" required>
+            <br><br>
+            <label for="level">Level:</label>
+            <input type="text" id="level" name="level" required>
+            <br><br>
+            <label for="postedAt">Posted At:</label>
+            <input type="text" id="postedAt" name="postedAt" required>
+            <br><br>
+            <label for="contract">Contract:</label>
+            <input type="text" id="contract" name="contract" required>
+            <br><br>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+            <br><br>
+            <label for="languages">Languages (Comma-separated):</label>
+            <input type="text" id="languages" name="languages" required>
+            <br><br>
+            <label for="tools">Tools (Comma-separated):</label>
+            <input type="text" id="tools" name="tools" required>
+            <button type="submit">Submit</button>
+        </form>
+        <br><br>
+        <span class="popup-close">Close</span>
+    </div>
+    <div id="tags-container" class="container">
+        <div id="job-listings"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var jobListings;
+            $.getJSON('data.json', function (data) {
+                jobListings = data;
+
+                function filterListings() {
+                    var selectedRoles = $('.filter-button[data-filter="role"].active').map(function () {
+                        return $(this).data('value');
+                    }).get();
+                    var filteredListings = jobListings.filter(function (job) {
+                        return (
+                            (selectedRoles.length === 0 || selectedRoles.includes(job.role))
+                        );
+                    });
+                    $('#job-listings').empty();
+                    renderJobListings(filteredListings);
+                }
+
+                renderJobListings(jobListings);
+
+                $('.filter-button').on('click', function () {
+                    $(this).toggleClass('active');
+                    filterListings();
+                });
+
+            });
+
+            function openJobDetailsPopup() {
+                $('#job-details-popup').fadeIn();
+            }
+
+            $('#add-job-button').on('click', function () {
+                openPopup();
+            });
+
+            $('#job-form').submit(function (e) {
+                e.preventDefault();
+                addJob();
+            });
+
+            $('.popup-close').on('click', function () {
+                closePopup();
+            });
+
+            function addJob() {
+                var jobId = generateUniqueId();
+                var position = $('#position').val();
+                var company = $('#company').val();
+                var logo = $('#logo').val();
+                var newJob = $('#new').is(':checked');
+                var featured = $('#featured').is(':checked');
+                var role = $('#role').val();
+                var level = $('#level').val();
+                var postedAt = $('#postedAt').val();
+                var contract = $('#contract').val();
+                var location = $('#location').val();
+                var languages = $('#languages').val().split(',').map(lang => lang.trim());
+                var tools = $('#tools').val().split(',').map(tool => tool.trim());
+
+                var newJobObject = {
+                    id: jobId,
+                    company: company,
+                    logo: logo,
+                    new: newJob,
+                    featured: featured,
+                    position: position,
+                    role: role,
+                    level: level,
+                    postedAt: postedAt,
+                    contract: contract,
+                    location: location,
+                    languages: languages,
+                    tools: tools
+                };
+
+                jobListings.push(newJobObject);
+
+                closePopup();
+
+                renderJobListings(jobListings);
+            }
+
+            function openPopup() {
+                $('#add-job-popup').fadeIn();
+            }
+
+            function closePopup() {
+                $('#add-job-popup').fadeOut();
+            }
+
+            function renderJobListings(listings) {
+                var jobListingsContainer = $('#job-listings');
+                if (listings.length === 0) {
+                    var noResultsMessage = $('<p>').addClass('no-results').text('No job listings match your criteria.');
+                    jobListingsContainer.append(noResultsMessage);
+                } else {
+                    $.each(listings, function (index, job) {
+                        var jobListing = $('<div>').addClass('job');
+                        var deleteButton = $('<button>').addClass('delete-button').text('X');
+                        deleteButton.on('click', function () {
+                            var jobId = job.id;
+                            var jobIndex = jobListings.findIndex(function (job) {
+                                return job.id === jobId;
+                            });
+                            if (jobIndex !== -1) {
+                                jobListings.splice(jobIndex, 1);
+                                jobListing.remove();
+                                if (jobListings.length === 0) {
+                                    var noResultsMessage = $('<p>').addClass('no-results').text('No job listings match your criteria.');
+                                    jobListingsContainer.append(noResultsMessage);
+                                }
+                            }
+                        });
+                        var jobDetails = $('<div>').addClass('job-details');
+                        var jobTagsContainer = $('<div>').addClass('job-tags-container');
+                        var tags = [job.role, job.level].concat(job.languages, job.tools);
+                        $.each(tags, function (index, tag) {
+                            jobTagsContainer.append($('<span>').addClass('tag').text(tag));
+                        });
+                        jobDetails.append(deleteButton);
+                        jobDetails.append($('<h2>').text(job.position));
+                        jobDetails.append(jobTagsContainer);
+                        var jobHeader = $('<div>').addClass('job-header');
+                        jobHeader.append($('<span>').addClass('company').text(job.company));
+                        if (job.new) {
+                            jobHeader.append($('<span>').addClass('new').text('New!'));
+                        }
+                        if (job.featured) {
+                            jobHeader.append($('<span>').addClass('featured').text('Featured'));
+                        }
+                        var jobInfo = $('<p>').text(job.postedAt + ' • ' + job.contract + ' • ' + job.location);
+                        jobDetails.append(jobHeader, jobInfo);
+                        var logo = $('<img>').attr({
+                            src: job.logo,
+                            alt: job.company + ' Logo'
+                        }).addClass('company-logo');
+                        jobListing.append(logo, jobDetails);
+                        jobListingsContainer.append(jobListing);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

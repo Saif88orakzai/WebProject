@@ -1,0 +1,247 @@
+#header-image{
+    width: 100%;
+}
+
+header{
+    background-color: #5BA4A4;
+}
+
+body{
+    background-color: #EFFAFA;
+}
+
+#bar-below-header{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+    background-color: white;
+}
+
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+#job-listings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.job {
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+.company {
+    color: #696969;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.new, .featured {
+    background-color: #5BA4A4;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.featured {
+    background-color: #2C3A3A;
+}
+
+h2 {
+    color: #333;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+p {
+    color: #696969;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.tag {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #333;
+    display: inline-block;
+    font-size: 12px;
+    margin-right: 5px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+    .job {
+        width: 100%;
+    }
+}
+
+.company-logo {
+    float: left;
+    margin-right: 20px;
+}
+
+.job-details {
+    overflow: hidden;
+}
+
+.job-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    float: right;
+}
+
+#tags-container{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tag {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #333;
+    display: inline-block;
+    font-size: 12px;
+    margin-right: 5px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tag:hover {
+    background-color: #5BA4A4;
+    color: #fff;
+}
+
+body, h1, h2, p, .company, .new, .featured, .tag {
+    font-family: 'League Spartan', sans-serif;
+}
+
+.job {
+    border-left: 0;
+    transition: border-left 0.3s ease;
+}
+
+.job:hover {
+    border-left: 5px solid #5BA4A4;
+}
+
+#bar-below-header {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.filter-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #5BA4A4;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 13px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.filter-button:hover {
+    background-color: #5BA4A4;
+}
+
+.company{
+    margin-right: 5px;
+}
+
+#add-job-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#add-job-button{
+    height: 32px;
+}
+
+.delete-button {
+    background-color: #e58282;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #333;
+    display: inline-block;
+    font-size: 12px;
+    margin-right: 5px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    float: right;
+}
+
+.delete-button:hover {
+    background-color: #5BA4A4;
+    color: #fff;
+}
+
+#add-new-job{
+    text-align: center;
+}
+
+#add-job-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #5BA4A4;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+@media (max-width: 390px) {
+    #bar-below-header {
+        display: inline;
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 390px) {
+    .job-details {
+        overflow: visible;
+    }
+}
+
+@media (max-width: 390px) {
+    .job-tags-container {
+        margin-top: 18px;
+        margin-bottom: 18px;
+    }
+}
